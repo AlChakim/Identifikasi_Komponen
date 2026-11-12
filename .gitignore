@@ -1,11 +1,9 @@
-
 # Python cache
 __pycache__/
 *.py[cod]
 *.pyo
 
 # Virtual environments
-Gemini Component Identifier.json
 venv/
 .venv/
 env/
@@ -30,3 +28,6 @@ Thumbs.db
 
 # Jupyter Notebook
 .ipynb_checkpoints/
+
+# Sensitive config
+Gemini Component Identifier.json
