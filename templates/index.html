@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0B1220">
+    <meta name="description" content="ElectroVision AI - Smart Electronics Recognition. Identifikasi 65 jenis komponen elektronika secara real-time dengan YOLO11s dan AI Assistant.">
+    <title>ElectroVision AI — Smart Electronics Recognition & Computer Vision Dashboard</title>
+    
+    <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom Modern Stylesheet -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="body-theme">
+
+    <!-- ================= NAVBAR ================= -->
+    <header class="navbar" id="navbar">
+        <div class="nav-container">
+            <a class="brand" href="#hero" aria-label="ElectroVision AI Beranda">
+                <div class="brand-mark">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                        <rect x="9" y="9" width="6" height="6"></rect>
+                        <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"></path>
+                    </svg>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-name">Electro<strong>Vision</strong> <span class="badge-ai">AI</span></span>
+                    <span class="brand-tagline">Smart Electronics Recognition</span>
+                </div>
+            </a>
+
+            <nav class="nav-links" id="navLinks">
+                <a href="#hero" class="nav-link active">Beranda</a>
+                <a href="#dashboard" class="nav-link">Identifikasi</a>
+                <a href="#catalog" class="nav-link">Komponen</a>
+                <a href="#technology" class="nav-link">Teknologi</a>
+                <a href="#how-it-works" class="nav-link">Cara Kerja</a>
+                <a href="#about" class="nav-link">Tentang</a>
+            </nav>
+
+            <div class="nav-actions">
+                <div class="system-status-pill" id="systemStatusPill" title="Status Sistem Backend">
+                    <span class="pulse-dot"></span>
+                    <span class="status-label">Online</span>
+                </div>
+                <div class="classes-badge" title="Jumlah Kelas yang Didukung Model">
+                    <span class="badge-icon">⚡</span>
+                    <span class="badge-text">{{ total_classes }} Komponen</span>
+                </div>
+                <button type="button" class="btn-assistant-toggle" id="btnNavAssistant" title="Buka AI Assistant">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                    <span>AI Assistant</span>
+                </button>
+                <button type="button" class="btn-mobile-menu" id="btnMobileMenu" aria-label="Toggle Menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= HERO SECTION ================= -->
+    <section class="hero-section" id="hero">
+        <div class="hero-glow-bg"></div>
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge-group">
+                    <span class="hero-pill"><span class="pill-dot"></span> Powered by YOLO11s</span>
+                    <span class="hero-pill hero-pill-cyan"><span class="pill-icon">🔬</span> {{ total_classes }} Component Classes</span>
+                    <span class="hero-pill hero-pill-purple"><span class="pill-icon">⚡</span> Real-Time Vision</span>
+                </div>
+
+                <h1 class="hero-title">
+                    Kenali Komponen Elektronik dengan <span class="gradient-text">Kecerdasan Buatan</span>
+                </h1>
+
+                <p class="hero-description">
+                    Identifikasi berbagai komponen elektronika secara otomatis menggunakan teknologi Computer Vision mutakhir. Arahkan kamera atau unggah gambar untuk mendeteksi mikrokontroler, sensor, IC, modul, dan komponen pasif secara instan.
+                </p>
+
+                <div class="hero-cta-group">
+                    <a href="#dashboard" class="btn-cta primary-cta">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                            <circle cx="12" cy="13" r="4"></circle>
+                        </svg>
+                        <span>Mulai Identifikasi</span>
+                    </a>
+                    <a href="#catalog" class="btn-cta secondary-cta">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                        <span>Jelajahi {{ total_classes }} Komponen</span>
+                    </a>
+                </div>
+
+                <div class="hero-metrics">
+                    <div class="metric-item">
+                        <span class="metric-value">65</span>
+                        <span class="metric-label">Kelas Terlatih</span>
+                    </div>
+                    <div class="metric-divider"></div>
+                    <div class="metric-item">
+                        <span class="metric-value">9</span>
+                        <span class="metric-label">Kategori Komponen</span>
+                    </div>
+                    <div class="metric-divider"></div>
+                    <div class="metric-item">
+                        <span class="metric-value">&lt; 60ms</span>
+                        <span class="metric-label">Target Latensi</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visual Floating Electronics Showcase -->
+            <div class="hero-visual">
+                <div class="electronics-stage">
+                    <div class="circuit-grid-pattern"></div>
+                    
+                    <!-- Floating Tech Cards -->
+                    <div class="floating-card card-esp32">
+                        <div class="card-icon-badge">⚡</div>
+                        <div class="card-info">
+                            <span class="card-tag">Microcontroller</span>
+                            <h4>ESP32 DevBoard</h4>
+                            <span class="card-stat">Wi-Fi + BLE 2.4GHz</span>
+                        </div>
+                    </div>
+
+                    <div class="floating-card card-uno">
+                        <div class="card-icon-badge">🤖</div>
+                        <div class="card-info">
+                            <span class="card-tag">Microcontroller</span>
+                            <h4>Arduino UNO R3</h4>
+                            <span class="card-stat">ATmega328P 16MHz</span>
+                        </div>
+                    </div>
+
+                    <div class="floating-card card-sonar">
+                        <div class="card-icon-badge">📡</div>
+                        <div class="card-info">
+                            <span class="card-tag">Sensor</span>
+                            <h4>Ultrasonic HC-SR04</h4>
+                            <span class="card-stat">Range 2cm - 400cm</span>
+                        </div>
+                    </div>
+
+                    <div class="floating-card card-oled">
+                        <div class="card-icon-badge">📺</div>
+                        <div class="card-info">
+                            <span class="card-tag">Display</span>
+                            <h4>OLED Display 0.96"</h4>
+                            <span class="card-stat">SSD1306 I2C 128x64</span>
+                        </div>
+                    </div>
+
+                    <div class="center-scanner-disc">
+                        <div class="disc-glow"></div>
+                        <div class="disc-ring ring-1"></div>
+                        <div class="disc-ring ring-2"></div>
+                        <div class="disc-core">
+                            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="9"></circle>
+                                <line x1="12" y1="3" x2="12" y2="7"></line>
+                                <line x1="12" y1="17" x2="12" y2="21"></line>
+                                <line x1="3" y1="12" x2="7" y2="12"></line>
+                                <line x1="17" y1="12" x2="21" y2="12"></line>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= MAIN IDENTIFICATION DASHBOARD ================= -->
+    <section class="dashboard-section" id="dashboard">
+        <div class="section-container">
+            <div class="section-header">
+                <div>
+                    <span class="section-eyebrow">COMPUTER VISION WORKSPACE</span>
+                    <h2 class="section-title">Dashboard Identifikasi Real-Time</h2>
+                    <p class="section-subtitle">Gunakan webcam live untuk deteksi dinamis, atau unggah foto komponen untuk analisis statis presisi.</p>
+                </div>
+                <div class="dashboard-mode-pills">
+                    <span class="mode-pill active" id="modeLivePill">
+                        <span class="mode-dot"></span> Live Vision Mode
+                    </span>
+                </div>
+            </div>
+
+            <!-- Two-Column Workspace -->
+            <div class="workspace-grid">
+                
+                <!-- KOLOM KIRI: Camera Detection Workspace -->
+                <div class="workspace-card scanner-workspace">
+                    <div class="scanner-card-header">
+                        <div class="scanner-title-group">
+                            <span class="hud-icon">▣</span>
+                            <h3>Vision Scanner Feed</h3>
+                        </div>
+                        <div class="scanner-meta">
+                            <span class="badge-hud" id="hudStatusBadge">
+                                <span class="hud-status-dot"></span>
+                                <span id="hudStatusText">Kamera Siap</span>
+                            </span>
+                            <span class="badge-hud badge-hud-mono" id="hudLatencyBadge">0 ms</span>
+                        </div>
+                    </div>
+
+                    <!-- AI Vision Scanner Frame -->
+                    <div class="scanner-viewport-wrapper">
+                        <div class="scanner-viewport" id="scannerViewport">
+                            <!-- HUD Corner Brackets -->
+                            <div class="hud-bracket bracket-tl"></div>
+                            <div class="hud-bracket bracket-tr"></div>
+                            <div class="hud-bracket bracket-bl"></div>
+                            <div class="hud-bracket bracket-br"></div>
+
+                            <!-- Animated Scanning Laser Line -->
+                            <div class="scanner-laser" id="scannerLaser"></div>
+
+                            <!-- Video & Canvas Elements -->
+                            <video id="webcam" autoplay playsinline muted></video>
+                            <canvas id="overlay" aria-hidden="true"></canvas>
+
+                            <!-- Live Hint Pill -->
+                            <div class="live-detection-indicator" id="liveDetectionIndicator" style="display: none;">
+                                <span class="live-pulse-dot"></span>
+                                <span>Scanning Active • YOLO11s</span>
+                            </div>
+
+                            <!-- Placeholder State When Camera is OFF -->
+                            <div class="camera-off-overlay" id="cameraOffOverlay">
+                                <div class="off-icon-circle">
+                                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                                        <circle cx="12" cy="13" r="4"></circle>
+                                    </svg>
+                                </div>
+                                <h4>Kamera Belum Aktif</h4>
+                                <p>Klik tombol di bawah untuk menyalakan webcam atau unggah file foto komponen dari komputer.</p>
+                                <div class="off-overlay-actions">
+                                    <button type="button" class="btn-action btn-start-stream" id="btnStartOverlay">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                        </svg>
+                                        <span>Nyalakan Kamera</span>
+                                    </button>
+                                    <button type="button" class="btn-action btn-upload-trigger" id="btnUploadOverlay">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                            <polyline points="17 8 12 3 7 8"></polyline>
+                                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                                        </svg>
+                                        <span>Upload Foto</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hardware & Control Bar -->
+                    <div class="scanner-controls-bar">
+                        <div class="control-group-left">
+                            <button type="button" class="btn-control btn-toggle-stream" id="btnToggleCamera">
+                                <span class="btn-ctrl-icon" id="toggleIcon">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                    </svg>
+                                </span>
+                                <span id="toggleText">Nyalakan Kamera</span>
+                            </button>
+
+                            <button type="button" class="btn-control btn-secondary-ctrl" id="btnCaptureSnapshot" title="Ambil snapshot frame saat ini" disabled>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                                </svg>
+                                <span>Capture Frame</span>
+                            </button>
+
+                            <button type="button" class="btn-control btn-secondary-ctrl" id="btnUploadImage">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="17 8 12 3 7 8"></polyline>
+                                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                                </svg>
+                                <span>Upload Foto</span>
+                            </button>
+                            <input type="file" id="imageFileInput" accept="image/*" style="display: none;">
+                        </div>
+
+                        <div class="control-group-right">
+                            <div class="camera-select-wrapper">
+                                <label for="cameraSelect" class="sr-only">Pilih Kamera</label>
+                                <select id="cameraSelect" aria-label="Pilih Perangkat Kamera">
+                                    <option value="">Memuat kamera...</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KOLOM KANAN: Detection Result Panel -->
+                <div class="workspace-card results-workspace">
+                    
+                    <!-- Detection Status Banner -->
+                    <div class="detection-status-banner" id="detectionStatusBanner">
+                        <div class="status-indicator-box">
+                            <span class="indicator-icon" id="statusIndicatorIcon">⏳</span>
+                            <div>
+                                <span class="indicator-title" id="statusIndicatorTitle">Menunggu Objek</span>
+                                <span class="indicator-desc" id="statusIndicatorDesc">Arahkan komponen ke kamera</span>
+                            </div>
+                        </div>
+                        <span class="detection-count-pill" id="detectionCountBadge">0 Objek</span>
+                    </div>
+
+                    <!-- Primary Detected Component Hero Card -->
+                    <div class="primary-result-card" id="primaryResultCard">
+                        <div class="primary-card-top">
+                            <div>
+                                <span class="eyebrow-accent">KOMPONEN UTAMA TERBACA</span>
+                                <h3 class="primary-name placeholder" id="primaryComponentName">Belum Ada Objek</h3>
+                            </div>
+                            <span class="primary-confidence-pill" id="primaryConfidenceBadge" style="display: none;">0% Akurasi</span>
+                        </div>
+
+                        <div class="primary-meta-row" id="primaryMetaRow" style="display: none;">
+                            <span class="meta-tag meta-category" id="primaryCategoryBadge">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                                <span id="primaryCategoryText">Category</span>
+                            </span>
+                            <span class="meta-tag meta-speed">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                <span id="primarySpeedText">0 ms latency</span>
+                            </span>
+                        </div>
+
+                        <p class="primary-short-desc" id="primaryShortDesc">
+                            Posisikan komponen elektronik di depan lensa kamera dengan pencahayaan yang cukup untuk melihat hasil identifikasi instan.
+                        </p>
+
+                        <!-- Action Buttons on Primary Detection -->
+                        <div class="primary-actions" id="primaryActions" style="display: none;">
+                            <button type="button" class="btn-action-primary" id="btnOpenPrimaryDetail">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                                <span>Lihat Spesifikasi & Pinout</span>
+                            </button>
+                            <button type="button" class="btn-action-ai" id="btnAskAIPrimary">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                                <span>Tanya ke AI Assistant</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Multi-Object Detections List -->
+                    <div class="detections-list-container">
+                        <div class="list-container-header">
+                            <div>
+                                <h4>Semua Objek Terdeteksi</h4>
+                                <span class="list-subtitle">Komponen dalam frame kamera</span>
+                            </div>
+                            <span class="list-badge" id="listBadgeCount">0</span>
+                        </div>
+
+                        <ul class="detections-stream-list" id="detectionsStreamList">
+                            <li class="empty-stream-state">
+                                <div class="empty-stream-icon">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <rect x="2" y="7" width="20" height="14" rx="2"></rect>
+                                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                                    </svg>
+                                </div>
+                                <p>Belum ada komponen elektronika yang terdeteksi.<br>Dekatkan komponen ke depan kamera.</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= COMPONENT EXPLORER (KATALOG 65 KOMPONEN) ================= -->
+    <section class="catalog-section" id="catalog">
+        <div class="section-container">
+            <div class="section-header center-header">
+                <span class="section-eyebrow">KATALOG KOMPONEN ELEKTRONIKA</span>
+                <h2 class="section-title">Eksplorasi 65 Komponen Elektronika</h2>
+                <p class="section-subtitle">Pelajari spesifikasi teknis, fungsi utama, prinsip kerja, konfigurasi pinout, dan contoh aplikasi rangkaian untuk setiap komponen yang didukung oleh model.</p>
+            </div>
+
+            <!-- Search and Filter Bar -->
+            <div class="catalog-controls">
+                <div class="search-input-box">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="text" id="componentSearchInput" placeholder="Cari nama komponen (misal: ESP32, Resistor, Ultrasonic, Arduino)..." aria-label="Cari Komponen">
+                    <button type="button" class="btn-clear-search" id="btnClearSearch" title="Hapus Pencarian" style="display: none;">×</button>
+                </div>
+
+                <!-- Category Filter Pills -->
+                <div class="category-filter-pills" id="categoryFilterPills">
+                    <button type="button" class="filter-pill active" data-category="all">
+                        Semua <span class="pill-count">65</span>
+                    </button>
+                    <button type="button" class="filter-pill" data-category="Microcontroller">
+                        Microcontroller <span class="pill-count">6</span>
+                    </button>
+                    <button type="button" class="filter-pill" data-category="Sensor">
+                        Sensor <span class="pill-count">11</span>
+                    </button>
+                    <button type="button" class="filter-pill" data-category="Motor & Actuator">
+                        Motor & Actuator <span class="pill-count">3</span>
+                    </button>
+                    <button type="button" class="filter-pill" data-category="Display">
+                        Display <span class="pill-count">3</span>
+                    </button>
+                    <button type="button" class="filter-pill" data-category="Passive Components">
+                        Passive <span class="pill-count">8</span>
+                    </button>
+                    <button type="button" class="filter-pill" data-category="Power Components">
+                        Power <span class="pill-count">8</span>
+                    </button>
+                    <button type="button" class="filter-pill" data-category="Communication Module">
+                        Communication <span class="pill-count">6</span>
+                    </button>
+                    <button type="button" class="filter-pill" data-category="Driver & Controller">
+                        Driver & Controller <span class="pill-count">7</span>
+                    </button>
+                    <button type="button" class="filter-pill" data-category="Other Electronics">
+                        Other <span class="pill-count">13</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Components Grid (Semua 65 Komponen) -->
+            <div class="components-grid" id="componentsGrid">
+                {% for comp in components %}
+                <div class="component-card" data-category="{{ comp.category }}" data-name="{{ comp.name | lower }}" data-key="{{ comp.raw_name }}">
+                    <div class="card-badge-row">
+                        <span class="comp-category-badge category-{{ comp.category_id }}">{{ comp.category }}</span>
+                        <span class="comp-id-label">#{{ loop.index }}</span>
+                    </div>
+
+                    <div class="comp-visual-box">
+                        <div class="comp-icon-circle icon-{{ comp.category_id }}">
+                            {% if comp.category_id == 'microcontroller' %}
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"></path></svg>
+                            {% elif comp.category_id == 'sensor' %}
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="m4.93 4.93 4.24 4.24"></path><path d="m14.83 9.17 4.24-4.24"></path><path d="m14.83 14.83 4.24 4.24"></path><path d="m9.17 14.83-4.24 4.24"></path><circle cx="12" cy="12" r="4"></circle></svg>
+                            {% elif comp.category_id == 'display' %}
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                            {% elif comp.category_id == 'motor_actuator' %}
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path></svg>
+                            {% elif comp.category_id == 'power' %}
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="16" height="10" rx="2"></rect><line x1="22" y1="11" x2="22" y2="13"></line></svg>
+                            {% elif comp.category_id == 'communication' %}
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
+                            {% else %}
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="comp-card-body">
+                        <h4 class="comp-title">{{ comp.name }}</h4>
+                        <p class="comp-desc">{{ comp.short_desc }}</p>
+                    </div>
+
+                    <div class="comp-card-footer">
+                        <button type="button" class="btn-comp-detail" data-key="{{ comp.raw_name }}">
+                            <span>Lihat Detail</span>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        </button>
+                        <button type="button" class="btn-comp-ask" data-key="{{ comp.raw_name }}" title="Tanya AI tentang komponen ini">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Empty Search State -->
+            <div class="empty-search-state" id="emptySearchState" style="display: none;">
+                <div class="empty-search-icon">🔍</div>
+                <h3>Komponen Tidak Ditemukan</h3>
+                <p>Tidak ada komponen yang cocok dengan kata kunci pencarian Anda. Coba gunakan istilah umum seperti "Arduino", "Sensor", atau "Resistor".</p>
+                <button type="button" class="btn-reset-filter" id="btnResetSearch">Tampilkan Semua Komponen</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= TECHNOLOGY SECTION ================= -->
+    <section class="technology-section" id="technology">
+        <div class="section-container">
+            <div class="section-header center-header">
+                <span class="section-eyebrow">TEKNOLOGI UTAMA</span>
+                <h2 class="section-title">Teknologi di Balik ElectroVision AI</h2>
+                <p class="section-subtitle">Kombinasi mutakhir Computer Vision real-time, arsitektur deep learning YOLO11s, dan backend Python asinkronus berkinerja tinggi.</p>
+            </div>
+
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <div class="tech-icon-circle tech-icon-blue">
+                        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                    </div>
+                    <h3>YOLO11s Architecture</h3>
+                    <p>Model deteksi objek deep learning generasi terbaru yang dilatih khusus mengenali 65 kelas komponen elektronika dengan akurasi dan kecepatan inferensi seimbang.</p>
+                    <span class="tech-badge">Ultralytics PyTorch</span>
+                </div>
+
+                <div class="tech-card">
+                    <div class="tech-icon-circle tech-icon-cyan">
+                        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                    </div>
+                    <h3>Real-Time Computer Vision</h3>
+                    <p>Pemanfaatan WebRTC Stream API dan Canvas 2D Overlay untuk rendering bounding box secara instan dengan frame rate responsif dan minim latensi.</p>
+                    <span class="tech-badge">WebRTC & HTML5 Canvas</span>
+                </div>
+
+                <div class="tech-card">
+                    <div class="tech-icon-circle tech-icon-purple">
+                        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                    </div>
+                    <h3>ElectroVision AI Assistant</h3>
+                    <p>Asisten AI cerdas berbasis konteks yang memahami spesifikasi pinout, prinsip kerja, batas tegangan, dan contoh kode pemrograman Arduino untuk komponen yang terdeteksi.</p>
+                    <span class="tech-badge">Context-Aware AI Assistant</span>
+                </div>
+
+                <div class="tech-card">
+                    <div class="tech-icon-circle tech-icon-green">
+                        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                    </div>
+                    <h3>High Performance FastAPI</h3>
+                    <p>Backend Python modern dengan arsitektur asynchronous ASGI yang mampu memproses inferensi gambar secara paralel dengan efisiensi memori maksimal.</p>
+                    <span class="tech-badge">FastAPI ASGI Engine</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= HOW IT WORKS SECTION ================= -->
+    <section class="how-it-works-section" id="how-it-works">
+        <div class="section-container">
+            <div class="section-header center-header">
+                <span class="section-eyebrow">ALUR PENGGUNAAN</span>
+                <h2 class="section-title">Bagaimana Sistem Bekerja</h2>
+                <p class="section-subtitle">Dari pemindaian sensor kamera hingga analisis mendalam dengan AI dalam 5 langkah sederhana.</p>
+            </div>
+
+            <div class="workflow-steps">
+                <div class="step-card">
+                    <div class="step-number">01</div>
+                    <div class="step-icon">📷</div>
+                    <h4>Nyalakan Kamera</h4>
+                    <p>Aktifkan webcam perangkat atau unggah file foto komponen elektronik dari komputer Anda.</p>
+                </div>
+                <div class="step-connector"></div>
+
+                <div class="step-card">
+                    <div class="step-number">02</div>
+                    <div class="step-icon">⚡</div>
+                    <h4>Ekstraksi Frame</h4>
+                    <p>Browser mengalirkan frame gambar beresolusi 640x480 secara terkompresi ke backend AI.</p>
+                </div>
+                <div class="step-connector"></div>
+
+                <div class="step-card">
+                    <div class="step-number">03</div>
+                    <div class="step-icon">🧠</div>
+                    <h4>Inferensi YOLO11s</h4>
+                    <p>Model neural network memprediksi lokasi bounding box, kelas, dan tingkat confidence score.</p>
+                </div>
+                <div class="step-connector"></div>
+
+                <div class="step-card">
+                    <div class="step-number">04</div>
+                    <div class="step-icon">📊</div>
+                    <h4>Tampilan Hasil</h4>
+                    <p>Bounding box tergambar di layar secara real-time lengkap dengan nama dan kategori komponen.</p>
+                </div>
+                <div class="step-connector"></div>
+
+                <div class="step-card">
+                    <div class="step-number">05</div>
+                    <div class="step-icon">💬</div>
+                    <h4>Eksplorasi AI</h4>
+                    <p>Buka AI Assistant untuk menanyakan pinout, skema rangkaian, dan contoh kode Arduino.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= ABOUT SECTION ================= -->
+    <section class="about-section" id="about">
+        <div class="section-container">
+            <div class="about-card">
+                <div class="about-content">
+                    <span class="section-eyebrow">TENTANG PROYEK</span>
+                    <h2>Solusi Pintar untuk Laboratorium & Edukasi Elektronika</h2>
+                    <p>
+                        <strong>ElectroVision AI</strong> dikembangkan untuk mengatasi kesulitan mahasiswa, praktisi maker, dan teknisi dalam membedakan puluhan modul elektronik, sensor berpenampilan mirip, dan komponen pasif.
+                    </p>
+                    <p>
+                        Dengan memanfaatkan kekuatan Computer Vision dan AI Assistant interaktif, platform ini menjadi jembatan pembelajaran yang cepat, akurat, dan dapat diandalkan langsung di meja kerja laboratorium.
+                    </p>
+                    <div class="about-highlights">
+                        <div class="highlight-item">
+                            <span class="hl-icon">✓</span>
+                            <span>Mengenali 65 kelas komponen elektronika standar industri & edukasi</span>
+                        </div>
+                        <div class="highlight-item">
+                            <span class="hl-icon">✓</span>
+                            <span>100% inferensi lokal on-premise tanpa ketergantungan API eksternal</span>
+                        </div>
+                        <div class="highlight-item">
+                            <span class="hl-icon">✓</span>
+                            <span>Katalog lengkap dengan panduan pinout dan contoh program</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand-col">
+                <div class="brand">
+                    <div class="brand-mark">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                            <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                            <rect x="9" y="9" width="6" height="6"></rect>
+                            <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"></path>
+                        </svg>
+                    </div>
+                    <span class="brand-name">Electro<strong>Vision</strong> <span class="badge-ai">AI</span></span>
+                </div>
+                <p class="footer-tagline">Smart Electronics Recognition & AI Laboratory Dashboard berbasis YOLO11s Computer Vision.</p>
+                <div class="footer-status-pill">
+                    <span class="pulse-dot"></span>
+                    <span>Sistem Berjalan Normal • Model YOLO11s Aktif</span>
+                </div>
+            </div>
+
+            <div class="footer-links-col">
+                <h5>Navigasi</h5>
+                <ul>
+                    <li><a href="#hero">Beranda</a></li>
+                    <li><a href="#dashboard">Vision Workspace</a></li>
+                    <li><a href="#catalog">Katalog Komponen</a></li>
+                    <li><a href="#technology">Teknologi</a></li>
+                    <li><a href="#how-it-works">Cara Kerja</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links-col">
+                <h5>Kategori Komponen</h5>
+                <ul>
+                    <li><a href="#catalog">Microcontroller (6)</a></li>
+                    <li><a href="#catalog">Sensor (11)</a></li>
+                    <li><a href="#catalog">Motor & Actuator (3)</a></li>
+                    <li><a href="#catalog">Communication (6)</a></li>
+                    <li><a href="#catalog">Passive & Power (16)</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links-col">
+                <h5>Spesifikasi Teknis</h5>
+                <ul>
+                    <li><span>Framework: FastAPI (Python)</span></li>
+                    <li><span>Vision Model: YOLO11s</span></li>
+                    <li><span>Kelas: 65 Objek Elektronika</span></li>
+                    <li><span>Resolusi: 640x640 Input</span></li>
+                    <li><span>Lisensi: Educational & Research</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="footer-bottom-container">
+                <p>© 2026 ElectroVision AI. Hak Cipta Dilindungi. Dibuat untuk praktikum dan riset Machine Learning & Computer Vision.</p>
+                <div class="footer-bottom-tags">
+                    <span>YOLO11s</span>
+                    <span>FastAPI</span>
+                    <span>WebRTC</span>
+                    <span>PyTorch</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ================= COMPONENT DETAIL MODAL ================= -->
+    <div class="modal-overlay" id="componentModal" aria-hidden="true">
+        <div class="modal-container" role="dialog" aria-labelledby="modalCompTitle">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <span class="modal-category-tag" id="modalCompCategory">Category</span>
+                    <h3 id="modalCompTitle">Nama Komponen</h3>
+                    <span class="modal-raw-name" id="modalCompRawName">raw-name</span>
+                </div>
+                <button type="button" class="btn-modal-close" id="btnModalClose" aria-label="Tutup Detail">✕</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="modal-section">
+                    <h4>Deskripsi Umum</h4>
+                    <p id="modalCompDesc">Deskripsi lengkap komponen...</p>
+                </div>
+
+                <div class="modal-grid-two">
+                    <div class="modal-section modal-card-box">
+                        <div class="modal-box-header">
+                            <span class="box-icon">🎯</span>
+                            <h4>Fungsi Utama</h4>
+                        </div>
+                        <p id="modalCompFunction">Fungsi utama komponen...</p>
+                    </div>
+
+                    <div class="modal-section modal-card-box">
+                        <div class="modal-box-header">
+                            <span class="box-icon">⚙️</span>
+                            <h4>Prinsip Kerja</h4>
+                        </div>
+                        <p id="modalCompWorking">Prinsip kerja komponen...</p>
+                    </div>
+                </div>
+
+                <div class="modal-section modal-card-box">
+                    <div class="modal-box-header">
+                        <span class="box-icon">🔌</span>
+                        <h4>Konfigurasi Pinout / Terminal</h4>
+                    </div>
+                    <p class="code-font" id="modalCompPinout">Pinout...</p>
+                </div>
+
+                <div class="modal-grid-two">
+                    <div class="modal-section modal-card-box">
+                        <div class="modal-box-header">
+                            <span class="box-icon">💡</span>
+                            <h4>Petunjuk Penggunaan</h4>
+                        </div>
+                        <p id="modalCompUsage">Cara penggunaan...</p>
+                    </div>
+
+                    <div class="modal-section modal-card-box">
+                        <div class="modal-box-header">
+                            <span class="box-icon">🚀</span>
+                            <h4>Contoh Penerapan Nyata</h4>
+                        </div>
+                        <p id="modalCompApplication">Contoh aplikasi...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn-modal-ai" id="btnModalAskAI">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                    <span>Tanya AI Assistant tentang Komponen Ini</span>
+                </button>
+                <button type="button" class="btn-modal-dismiss" id="btnModalDismiss">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= CAPTURED SNAPSHOT MODAL ================= -->
+    <div class="modal-overlay" id="snapshotModal" aria-hidden="true">
+        <div class="modal-container snapshot-modal-container" role="dialog" aria-labelledby="snapshotTitle">
+            <div class="modal-header">
+                <div>
+                    <h3 id="snapshotTitle">Hasil Capture Frame</h3>
+                    <p class="modal-subtitle">Snapshot frame kamera dengan overlay deteksi YOLO11s</p>
+                </div>
+                <button type="button" class="btn-modal-close" id="btnSnapshotClose" aria-label="Tutup Snapshot">✕</button>
+            </div>
+            <div class="modal-body snapshot-body">
+                <div class="snapshot-preview-box">
+                    <img id="snapshotImage" src="" alt="Snapshot Frame Kamera">
+                </div>
+                <div class="snapshot-stats-box" id="snapshotStatsBox">
+                    <!-- Dynamic Snapshot Stats -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a id="btnDownloadSnapshot" class="btn-modal-ai" download="electrovision-capture.jpg">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    <span>Download Gambar</span>
+                </a>
+                <button type="button" class="btn-modal-dismiss" id="btnSnapshotDismiss">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= FLOATING AI ASSISTANT CHATBOT ================= -->
+    <!-- Floating Trigger Button -->
+    <button type="button" class="floating-ai-btn" id="floatingAiBtn" title="Buka ElectroVision AI Assistant">
+        <div class="ai-btn-glow"></div>
+        <div class="ai-btn-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            <span class="floating-pulse-badge"></span>
+        </div>
+        <span class="ai-btn-label">AI Assistant</span>
+    </button>
+
+    <!-- Slide-in Chat Drawer -->
+    <div class="chat-drawer-overlay" id="chatDrawerOverlay" aria-hidden="true">
+        <aside class="chat-drawer" id="chatDrawer" role="region" aria-label="ElectroVision AI Assistant Chat">
+            
+            <!-- Chat Drawer Header -->
+            <div class="chat-header">
+                <div class="chat-header-info">
+                    <div class="chat-avatar">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                            <rect x="9" y="9" width="6" height="6"></rect>
+                            <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"></path>
+                        </svg>
+                        <span class="avatar-status-dot"></span>
+                    </div>
+                    <div>
+                        <h4 class="chat-assistant-title">ElectroVision AI Assistant</h4>
+                        <span class="chat-assistant-status">Online • Siap Membantu</span>
+                    </div>
+                </div>
+
+                <div class="chat-header-actions">
+                    <button type="button" class="btn-chat-icon" id="btnClearChat" title="Hapus Riwayat Chat">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    </button>
+                    <button type="button" class="btn-chat-icon" id="btnCloseChat" title="Tutup Chat">✕</button>
+                </div>
+            </div>
+
+            <!-- Active Detection Context Pill (Muncul otomatis saat objek terdeteksi) -->
+            <div class="chat-context-bar" id="chatContextBar" style="display: none;">
+                <div class="context-pill">
+                    <span class="context-icon">🔍</span>
+                    <span class="context-label">Konteks Terdeteksi: <strong id="chatContextComponentName">ESP32</strong></span>
+                </div>
+                <button type="button" class="btn-clear-context" id="btnClearContext" title="Hapus Konteks">×</button>
+            </div>
+
+            <!-- Chat Suggestions Quick Chips -->
+            <div class="chat-suggestions-chips" id="chatSuggestionsChips">
+                <button type="button" class="suggestion-chip" data-prompt="Apa fungsi dan kegunaan komponen ini?">
+                    💡 Fungsi Komponen Ini?
+                </button>
+                <button type="button" class="suggestion-chip" data-prompt="Jelaskan konfigurasi pinout dan tegangan kerjanya.">
+                    🔌 Pinout & Tegangan?
+                </button>
+                <button type="button" class="suggestion-chip" data-prompt="Berikan contoh kode pemrograman untuk Arduino.">
+                    💻 Contoh Kode Arduino
+                </button>
+                <button type="button" class="suggestion-chip" data-prompt="Apa perbedaan Arduino Uno dan ESP32?">
+                    ⚡ Arduino UNO vs ESP32
+                </button>
+                <button type="button" class="suggestion-chip" data-prompt="Bagaimana cara menggunakan sensor ultrasonic HC-SR04?">
+                    📡 Cara Pakai Ultrasonik
+                </button>
+            </div>
+
+            <!-- Chat Messages Area -->
+            <div class="chat-messages-scroll" id="chatMessagesScroll">
+                <div class="message-bubble message-assistant">
+                    <div class="bubble-avatar">⚡</div>
+                    <div class="bubble-content">
+                        <p>Halo! Saya <strong>ElectroVision AI Assistant</strong>.</p>
+                        <p>Saya siap membantu Anda memahami <strong>65 komponen elektronika</strong> yang didukung sistem ini. Anda dapat menanyakan fungsi, pinout, cara merangkai, hingga contoh kode program Arduino/ESP32.</p>
+                        <p class="bubble-tip">💡 <em>Arahkan kamera ke komponen atau klik salah satu pertanyaan cepat di atas untuk memulai!</em></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Typing Indicator -->
+            <div class="chat-typing-indicator" id="chatTypingIndicator" style="display: none;">
+                <span class="typing-dot"></span>
+                <span class="typing-dot"></span>
+                <span class="typing-dot"></span>
+                <span class="typing-text">AI sedang menganalisis...</span>
+            </div>
+
+            <!-- Chat Input Footer -->
+            <form class="chat-input-form" id="chatInputForm">
+                <div class="chat-input-wrapper">
+                    <input type="text" id="chatInput" placeholder="Ketik pertanyaan seputar komponen elektronika..." autocomplete="off">
+                    <button type="submit" class="btn-send-chat" id="btnSendChat" aria-label="Kirim Pesan">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </button>
+                </div>
+            </form>
+
+        </aside>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/static/js/main.js" defer></script>
+</body>
+</html>
